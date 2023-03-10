@@ -14,6 +14,6 @@ entries:
     - https://github.com/hardikhp4199/helm-nginx-demo/tree/main/templates
     type: application
     urls:
-    - dr-project-0.1.0.tgz
+    - https://github.com/hardikhp4199/httpdemo/raw/main/dr-project-0.1.0.tgz
     version: 0.1.0
 generated: "2023-03-10T17:23:54.0471717+05:30"
