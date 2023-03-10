@@ -1,0 +1,76 @@
+{{- if .Values.istio.enabled -}}
+{{- $servicename := .Values.service.servicename -}}
+{{- $servicePort := .Values.service.port -}}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: vs-{{.Values.virtualService.name}}
+  namespace: {{.Values.istio.namespace}}
+spec:
+  gateways:
+    - {{.Values.gateway.name}}
+  hosts:
+    - {{.Values.istio.host }}
+  {{- if .Values.istio.ssh.enabled }}
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: {{ $servicename }}.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: {{$servicePort}}
+  {{- else}}
+  tls:
+    - match:
+        - port: 443
+          sniHosts:
+            - {{.Values.istio.host }}
+      route:
+        - destination:
+            host: {{ $servicename }}.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: {{$servicePort}}
+  {{- end}}
+--- 
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: {{ .Values.gateway.name }}
+  namespace: {{.Values.istio.namespace}}
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    {{- if eq  .Values.gateway.gatewaytype "http" }}
+    - hosts:
+        - {{ .Values.istio.host }}
+      port:
+        name: {{ .Values.gateway.port.name }}
+        number: {{ .Values.gateway.port.number }}
+        protocol: {{ .Values.gateway.port.protocol }}
+    {{- end }}
+    {{- if eq  .Values.gateway.gatewaytype "https-passthrough"}}
+    - hosts:
+        - {{ .Values.istio.host }}
+      port:
+        name: {{ .Values.gateway.port.name }}
+        number: {{ .Values.gateway.port.number }}
+        protocol: {{ .Values.gateway.port.protocol }}
+      tls:
+        httpsRedirect: false
+        mode: PASSTHROUGH
+    {{- end }}
+    {{- if eq  .Values.gateway.gatewaytype "https-simple" }}
+    - hosts:
+        - {{.Values.istio.host }}
+      port:
+        name: {{ .Values.gateway.port.name }}
+        number: {{ .Values.gateway.port.number }}
+        protocol: {{ .Values.gateway.port.protocol }}
+      tls:
+        credentialName: {{ .Values.gateway.secrat.name }}
+        mode: SIMPLE
+    {{- end }}
+{{- end -}}

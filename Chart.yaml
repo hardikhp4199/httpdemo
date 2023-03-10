@@ -1,0 +1,14 @@
+apiVersion: v2
+name: dr-project
+version: 0.1.0
+description: A Helm chart for Kubernetes
+#icon: "icon path"
+#home: "home page url"
+sources: 
+- https://github.com/hardikhp4199/helm-nginx-demo/tree/main/templates
+type: application
+appVersion: "1.0.0"
+#owner details
+maintainers:
+- email: hardikmca3125@gmail.com
+  name: hpdevops

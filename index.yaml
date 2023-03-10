@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  dr-project:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-03-10T17:23:54.0481713+05:30"
+    description: A Helm chart for Kubernetes
+    digest: 52dbc48740ed274d983607cc4d622ab32d11c30fadb70915cd65c95b6179f066
+    maintainers:
+    - email: hardikmca3125@gmail.com
+      name: hpdevops
+    name: dr-project
+    sources:
+    - https://github.com/hardikhp4199/helm-nginx-demo/tree/main/templates
+    type: application
+    urls:
+    - dr-project-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-03-10T17:23:54.0471717+05:30"

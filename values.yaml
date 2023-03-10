@@ -1,0 +1,105 @@
+#------------------------------------------------------------------
+#deployment variable
+replicaCount: 1
+
+image:
+  repository: hardikhp4199/httpdemo
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: 
+  - name: "infra-prod-regsecret"
+
+nameOverride: ""
+fullnameOverride: ""
+deployname: pod-infra-httpapi
+
+deploylabel: 
+  instance: "pod-infra-httpapi"
+  role: "pod-infra-httpapi"
+  ca-access-cb: "true"
+  ca-ns-access-istio: "true"
+  
+resources:
+  limits:
+    cpu: 100m
+    memory: 5Gi
+  requests:
+    cpu: 20m
+    memory: 32Mi
+
+affinity: 
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: instance
+                operator: In
+                values:
+                  - "pod-infra-httpapi"
+          topologyKey: kubernetes.io/hostname
+        weight: 100
+
+# for used this for service and deployment
+instancevalue: "pod-infra-httpapi"
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+
+#------------------------------------------------------------------
+#for service
+service:
+  servicename: "svc-infra-httpapi"
+  type: ClusterIP
+  port: 8000
+  portname: "cb-sink-podname"
+  servicelable: [role: "pod-infra-httpapi"]
+
+#------------------------------------------------------------------
+#for istio
+istio:
+  enabled: true
+  namespace: "istio-system"
+  ssh: 
+    enabled: true
+  host: "ab-httpapi-demo-1.dynamic1001.com"
+
+#------------------------------------------------------------------
+#for virtualService
+virtualService:
+  name: "demo-httpapi"
+
+#------------------------------------------------------------------
+#for virtualService
+gateway:
+  name: "gateway-demo-httpapi"
+  gatewaytype: "http"
+  port:
+    name: "httpapi-demo"
+    number: 80
+    protocol: HTTP
+  secret: 
+    name: "ssl-dynamic1001-com"
