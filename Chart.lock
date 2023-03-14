@@ -1,0 +1,6 @@
+dependencies:
+- name: dr-project
+  repository: https://hardikhp4199.github.io/httpdemo
+  version: 0.1.0
+digest: sha256:0ab5c1df7c30acee17b7ca9ca6607367590421e256dc040fb8e85d3983e16cd8
+generated: "2023-03-10T18:41:54.8947305+05:30"

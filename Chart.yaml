@@ -12,3 +12,8 @@ appVersion: "1.0.0"
 maintainers:
 - email: hardikmca3125@gmail.com
   name: hpdevops
+dependencies:
+  - name: dr-project
+    version: "0.1.0"
+    repository: "https://hardikhp4199.github.io/httpdemo"
+    alias: dr-project-child-1

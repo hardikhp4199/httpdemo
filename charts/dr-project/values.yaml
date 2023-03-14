@@ -12,11 +12,11 @@ imagePullSecrets:
 
 nameOverride: ""
 fullnameOverride: ""
-deployname: pod-infra-httpapi
+deployname: pod-infra-httpapi-1
 
 deploylabel: 
-  instance: "pod-infra-httpapi"
-  role: "pod-infra-httpapi"
+  instance: "pod-infra-httpapi-1"
+  role: "pod-infra-httpapi-1"
   ca-access-cb: "true"
   ca-ns-access-istio: "true"
   
@@ -37,12 +37,12 @@ affinity:
               - key: instance
                 operator: In
                 values:
-                  - "pod-infra-httpapi"
+                  - "pod-infra-httpapi-1"
           topologyKey: kubernetes.io/hostname
         weight: 100
 
 # for used this for service and deployment
-instancevalue: "pod-infra-httpapi"
+instancevalue: "pod-infra-httpapi-1"
 
 podAnnotations: {}
 
@@ -72,11 +72,11 @@ tolerations: []
 #------------------------------------------------------------------
 #for service
 service:
-  servicename: "svc-infra-httpapi"
+  servicename: "svc-infra-httpapi-1"
   type: ClusterIP
   port: 8000
-  portname: "cb-sink-podname"
-  servicelable: [role: "pod-infra-httpapi"]
+  portname: "cb-sink-podname-1"
+  servicelable: [role: "pod-infra-httpapi-1"]
 
 #------------------------------------------------------------------
 #for istio
@@ -85,29 +85,21 @@ istio:
   namespace: "istio-system"
   ssh: 
     enabled: true
-  host: "ab-httpapi-demo-1.dynamic1001.com"
+  host: "ab-httpapi-demo-2.dynamic1001.com"
 
 #------------------------------------------------------------------
 #for virtualService
 virtualService:
-  name: "demo-httpapi"
+  name: "demo-httpapi-1"
 
 #------------------------------------------------------------------
 #for virtualService
 gateway:
-  name: "gateway-demo-httpapi"
+  name: "gateway-demo-httpapi-1"
   gatewaytype: "http"
   port:
-    name: "httpapi-demo"
+    name: "httpapi-demo-1"
     number: 80
     protocol: HTTP
   secret: 
     name: "ssl-dynamic1001-com"
-
-#------------------------------------------------------------------
-#overriding the value of child chart
-#------------------------------------------------------------------
-# One way
-#------------------------------------------------------------------
-dr-project-child-1:
-  deployname: "pod-infra-httpapi-test"
